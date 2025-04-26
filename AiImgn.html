@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tej AI Image Generator - Create Stunning AI Art in Seconds</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #f8f9fa;
+            --accent-color: #00cec9;
+            --dark-color: #2d3436;
+            --light-color: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 50px 0;
+            background: linear-gradient(135deg, var(--primary-color), #a29bfe);
+            color: var(--light-color);
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .tool-container {
+            background-color: var(--light-color);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .prompt-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .style-option {
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .style-option:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .style-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(108, 92, 231, 0.1);
+        }
+        
+        .style-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .settings-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .setting-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        select.setting-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--dark-color);
+        }
+        
+        .btn:disabled {
+            background-color: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background-color: #f5f6fa;
+            border-radius: 10px;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 5px solid var(--primary-color);
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-container {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .result-item {
+            background-color: #f5f6fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .result-actions {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background-color: white;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+        
+        .feature-card {
+            background-color: var(--light-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .feature-desc {
+            color: #636e72;
+            font-size: 1rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #636e72;
+            font-size: 0.95rem;
+        }
+        
+        .watermark {
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .tool-container {
+                padding: 25px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tej AI Image Generator</h1>
+            <p class="tagline">Transform your imagination into stunning AI-generated artwork with just a few words</p>
+        </header>
+        
+        <div class="tool-container">
+            <div class="input-section">
+                <label for="promptInput" style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 1.1rem;">Describe the image you want to create</label>
+                <textarea id="promptInput" class="prompt-input" placeholder="Example: A majestic lion standing on a cliff at sunset, digital art style, highly detailed, cinematic lighting"></textarea>
+                
+                <h3 style="margin-bottom: 15px;">Select Style</h3>
+                <div class="style-options">
+                    <div class="style-option selected">
+                        <span class="style-icon">🎨</span>
+                        <span>Digital Art</span>
+                    </div>
+                    <div class="style-option">
+                        <span class="style-icon">📷</span>
+                        <span>Photorealistic</span>
+                    </div>
+                    <div class="style-option">
+                        <span class="style-icon">✏️</span>
+                        <span>Sketch</span>
+                    </div>
+                    <div class="style-option">
+                        <span class="style-icon">🎭</span>
+                        <span>Fantasy</span>
+                    </div>
+                    <div class="style-option">
+                        <span class="style-icon">🏙️</span>
+                        <span>Cyberpunk</span>
+                    </div>
+                    <div class="style-option">
+                        <span class="style-icon">🌌</span>
+                        <span>Surreal</span>
+                    </div>
+                </div>
+                
+                <div class="settings-row">
+                    <div class="setting-group">
+                        <label for="imageSize" class="setting-label">Image Size</label>
+                        <select id="imageSize" class="setting-input">
+                            <option value="square">Square (512×512)</option>
+                            <option value="portrait">Portrait (512×768)</option>
+                            <option value="landscape">Landscape (768×512)</option>
+                            <option value="hd">HD (1024×1024)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="artStyle" class="setting-label">Art Style</label>
+                        <select id="artStyle" class="setting-input">
+                            <option value="default">Default</option>
+                            <option value="anime">Anime</option>
+                            <option value="painting">Oil Painting</option>
+                            <option value="watercolor">Watercolor</option>
+                            <option value="3d">3D Render</option>
+                            <option value="vector">Vector Art</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="quality" class="setting-label">Quality</label>
+                        <select id="quality" class="setting-input">
+                            <option value="standard">Standard</option>
+                            <option value="high">High</option>
+                            <option value="ultra">Ultra</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="generateBtn" class="btn btn-accent">
+                    <i class="fas fa-magic"></i> Generate Images
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <i class="fas fa-trash-alt"></i> Clear
+                </button>
+            </div>
+            
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <h3>Generating your AI artwork...</h3>
+                <p>This usually takes 15-30 seconds. Please don't close this page.</p>
+            </div>
+            
+            <div id="resultsContainer" class="results-container">
+                <h2 style="text-align: center;">Your AI Generated Images</h2>
+                <p style="text-align: center; margin-bottom: 20px; color: #636e72;">Click on any image to download or share</p>
+                
+                <div class="results-grid">
+                    <!-- Results will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="feature-title">Lightning Fast</h3>
+                <p class="feature-desc">Generate high-quality AI images in seconds, not hours. Our optimized algorithms deliver quick results without compromising quality.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                <h3 class="feature-title">Advanced Controls</h3>
+                <p class="feature-desc">Fine-tune your creations with style presets, quality settings, and multiple aspect ratios to get exactly what you envision.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title">Commercial License</h3>
+                <p class="feature-desc">All images you generate are yours to use anywhere - social media, websites, merchandise, and more with no restrictions.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 Tej AI Image Generator. All rights reserved.</p>
+        <p class="watermark">Powered by cutting-edge artificial intelligence</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const promptInput = document.getElementById('promptInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const loading = document.getElementById('loading');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsGrid = document.querySelector('.results-grid');
+            const styleOptions = document.querySelectorAll('.style-option');
+            
+            // Sample images for demo purposes
+            const demoImages = [
+                'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80',
+                'https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80',
+                'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80',
+                'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80'
+            ];
+            
+            // Style selection
+            styleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    styleOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Generate button click
+            generateBtn.addEventListener('click', function() {
+                if (!promptInput.value.trim()) {
+                    alert('Please enter a description for the image you want to generate');
+                    return;
+                }
+                
+                // Show loading
+                loading.style.display = 'block';
+                resultsContainer.style.display = 'none';
+                
+                // Simulate API call delay
+                setTimeout(generateImages, 2000);
+            });
+            
+            function generateImages() {
+                // Hide loading
+                loading.style.display = 'none';
+                
+                // Clear previous results
+                resultsGrid.innerHTML = '';
+                
+                // Add demo results (in a real app, these would come from an API)
+                demoImages.forEach((imgUrl, index) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+                    resultItem.innerHTML = `
+                        <img src="${imgUrl}" alt="AI generated image ${index + 1}" class="result-image">
+                        <div class="result-actions">
+                            <button class="btn download-btn" style="padding: 8px 15px; font-size: 0.9rem;">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                            <button class="btn btn-secondary share-btn" style="padding: 8px 15px; font-size: 0.9rem;">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    `;
+                    resultsGrid.appendChild(resultItem);
+                });
+                
+                // Show results
+                resultsContainer.style.display = 'block';
+                
+                // Scroll to results
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                
+                // Add event listeners to new buttons
+                document.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        alert('In a real implementation, this would download the image');
+                    });
+                });
+                
+                document.querySelectorAll('.share-btn').forEach
